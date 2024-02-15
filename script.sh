@@ -8,6 +8,13 @@ fi
 
 echo "If prompted, please accept the questions in the prompts to continue."
 
+#!/bin/bash
+
+# Update packages without interaction, keeping existing config files
+DEBIAN_FRONTEND=noninteractive apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
+
+
 # Generate passwords
 wordpress_user_admin="$(openssl rand -hex 10)"
 mysql_pass="$(openssl rand -hex 64)"
