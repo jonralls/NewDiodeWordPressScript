@@ -7,13 +7,7 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 echo "If prompted, please accept the questions in the prompts to continue."
-echo 'openssh-server openssh-server/sshd_config_keep boolean true' | debconf-set-selections
 
-#!/bin/bash
-
-# Update packages without interaction, keeping existing config files
-DEBIAN_FRONTEND=noninteractive apt-get update
-DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
 
 
 # Generate passwords
