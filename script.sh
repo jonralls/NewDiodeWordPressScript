@@ -26,6 +26,10 @@ echo "mysql_wordpress_user_password=$mysql_user_pass" >> passwords.txt
 ufw allow ssh
 ufw --force enable
 
+# Update packages without interaction, keeping existing config files
+DEBIAN_FRONTEND=noninteractive apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
+
 # Update software repositories and upgrade packages
 apt-get update && apt-get upgrade -y
 
