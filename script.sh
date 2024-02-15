@@ -7,6 +7,7 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 echo "If prompted, please accept the questions in the prompts to continue."
+echo 'openssh-server openssh-server/sshd_config_keep boolean true' | debconf-set-selections
 
 #!/bin/bash
 
