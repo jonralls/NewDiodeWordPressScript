@@ -8,8 +8,6 @@ fi
 
 echo "If prompted, please accept the questions in the prompts to continue."
 
-
-
 # Generate passwords
 wordpress_user_admin="$(openssl rand -hex 10)"
 mysql_pass="$(openssl rand -hex 64)"
@@ -76,6 +74,7 @@ echo "<VirtualHost *:80>
 # Enable the site and required modules
 a2ensite wordpress.conf
 a2enmod rewrite
+a2dissite 000-default
 systemctl reload apache2
 systemctl restart apache2
 
@@ -150,11 +149,23 @@ Type=simple
 ExecStart=/root/opt/diode/diode publish -public 80:80
 Restart=always
 RuntimeMaxSec=14400
+ExecStartPre=/bin/sleep 60
+User=root
 
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/diode.service
 
-systemctl enable diode.service
-systemctl start diode.service
+#Enable diode
+systemctl enable diode
+echo "Starting Diode - 60 second delay..."
+systemctl start diode
+systemctl status diode
 
-echo "Setup complete. Access your WordPress site at: http://${diode_address}.diode.link"
+echo "Done setting up the Diode CLI - it is now persistent on this system"
+echo "You can type 'systemctl status diode' to get status on the Diode CLI in the future"
+
+#display login instructions
+echo "wordpress url is http://${diode_address}.diode.link"
+echo "log into wordpress with the user name admin"
+echo "and the password $wordpress_user_admin"
+echo "remember to change the password and save it in a password manager"
